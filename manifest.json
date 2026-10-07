@@ -1,0 +1,10 @@
+{
+  "id": "kit-personnel",
+  "name": "Kit Personnel",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "Pages de dossier façon Notion créées automatiquement, couleurs de dossier sur les pages, tâches pliables par projet et style vert pastel (pour AnuPpuccin).",
+  "author": "Bwwwah",
+  "authorUrl": "https://github.com/Bwwwah",
+  "isDesktopOnly": false
+}

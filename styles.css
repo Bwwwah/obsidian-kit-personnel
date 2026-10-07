@@ -1,0 +1,230 @@
+/* ==== Personnel : touches perso par-dessus AnuPpuccin ==== */
+
+/* ---------- Page d'accueil (cssclasses: accueil) ---------- */
+.accueil .inline-title,
+.accueil .iconize-title-icon { display: none; }
+
+.accueil h1,
+.accueil .HyperMD-header-1 {
+  font-family: var(--font-monospace);
+  color: var(--color-green);
+  letter-spacing: -0.02em;
+}
+.accueil h1::before,
+.accueil .HyperMD-header-1 .cm-header-1:first-of-type::before {
+  content: "❯ ";
+  color: var(--text-faint);
+}
+.accueil h1::after {
+  content: "▌";
+  margin-left: 0.1em;
+  animation: perso-blink 1.1s steps(1) infinite;
+}
+@keyframes perso-blink { 50% { opacity: 0; } }
+
+/* Tuiles « Espaces » : > [!cards] + liste de liens */
+.accueil .callout[data-callout="cards"] {
+  background: transparent;
+  border: none;
+  padding: 0;
+  mix-blend-mode: normal;
+}
+.accueil .callout[data-callout="cards"] .callout-icon { display: none; }
+.accueil .callout[data-callout="cards"] .callout-title {
+  font-family: var(--font-monospace);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 0 0 0.6em 0;
+}
+.accueil .callout[data-callout="cards"] .callout-content > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.accueil .callout[data-callout="cards"] .callout-content > ul > li {
+  list-style: none;
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-left: 4px solid var(--card-color, var(--interactive-accent));
+  background: var(--background-secondary);
+  transition: transform 120ms ease, border-color 120ms ease;
+}
+.accueil .callout[data-callout="cards"] .callout-content > ul > li:hover {
+  transform: translateY(-2px);
+  border-color: var(--card-color, var(--interactive-accent));
+}
+.accueil .callout[data-callout="cards"] li::marker { content: ""; }
+.accueil .callout[data-callout="cards"] .list-bullet,
+.accueil .callout[data-callout="cards"] .list-collapse-indicator { display: none; }
+.accueil .callout[data-callout="cards"] li a.internal-link {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-normal);
+}
+/* secours si le plugin « Couleurs des dossiers » est désactivé */
+.accueil .callout[data-callout="cards"] li:nth-child(1) { --card-color: var(--color-green); }
+.accueil .callout[data-callout="cards"] li:nth-child(2) { --card-color: var(--color-blue); }
+.accueil .callout[data-callout="cards"] li:nth-child(3) { --card-color: var(--color-orange); }
+.accueil .callout[data-callout="cards"] li:nth-child(4) { --card-color: var(--color-pink); }
+.accueil .callout[data-callout="cards"] li:nth-child(5) { --card-color: var(--color-purple); }
+.accueil .callout[data-callout="cards"] li:nth-child(6) { --card-color: var(--color-yellow); }
+
+/* ---------- Explorateur ---------- */
+/* Pièces jointes : discret */
+.nav-folder-title[data-path="Pièces jointes"] { opacity: 0.55; }
+
+/* Lien « terminal » : petit soulignement vert au survol */
+.markdown-rendered a.internal-link:hover,
+.cm-hmd-internal-link:hover { text-decoration-color: var(--color-green); }
+
+/* ==================================================================
+   Pages de dossier (cssclasses: dossier) — look tableau de bord
+   ================================================================== */
+
+/* Le gros titre = nom du dossier, avec son icône, dans la couleur du dossier */
+.dossier .inline-title {
+  font-size: 2em;
+  color: var(--dossier-color, var(--color-green));
+  font-weight: 700;
+}
+.dossier .iconize-title-icon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: -0.1em;
+  margin-right: 0.35em;
+  transform: scale(1.1);
+}
+
+/* Phrase d'intro (> ...) : bandeau doux au lieu d'une citation fade */
+.dossier .markdown-preview-view .callout[data-callout],
+.dossier blockquote {
+  border: none;
+  border-radius: 12px;
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  font-style: normal;
+  padding: 0.7em 1.1em;
+  margin-bottom: 1.4em;
+}
+.dossier blockquote { border-left: 4px solid var(--dossier-color, var(--color-green)); }
+
+/* Petit intitulé "Contenu" / "Fichiers" en capitales discrètes */
+.dossier h2 {
+  font-family: var(--font-monospace);
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  border: none;
+  margin: 1.6em 0 0.6em;
+}
+
+/* La liste des sous-dossiers / notes : cartes espacées */
+.dossier .folder-overview-container {
+  margin-top: 0.3em;
+}
+.dossier .folder-overview-container .tree-item {
+  margin: 0;
+}
+/* chaque entrée = ligne carte */
+.dossier .folder-overview-container .tree-item-self {
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin: 5px 0;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  transition: transform 110ms ease, border-color 110ms ease, background 110ms ease;
+}
+.dossier .folder-overview-container .tree-item-self:hover {
+  transform: translateX(3px);
+  border-color: var(--dossier-color, var(--color-green));
+  background: var(--background-secondary-alt);
+}
+/* Dossiers : liseré couleur du dossier + label en gras + place pour le chevron */
+.dossier .folder-overview-container .nav-folder-title {
+  border-left: 3px solid var(--dossier-color, var(--color-green));
+  font-weight: 600;
+  padding-left: 34px;
+}
+/* chevron de repliage : calé dans la marge interne, jamais sur le bord */
+.dossier .folder-overview-container .nav-folder-title .collapse-icon {
+  position: absolute;
+  left: 11px;
+  margin: 0 !important;
+}
+/* Fichiers/notes : liseré discret + place pour l'icône de feuille */
+.dossier .folder-overview-container .nav-file-title {
+  border-left: 3px solid var(--background-modifier-border);
+  padding-left: 34px;
+}
+/* icône de feuille (AnuPpuccin) : calée dans la marge interne */
+.dossier .folder-overview-container .nav-file-title::before {
+  left: 11px;
+  margin-left: 0 !important;
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* Sous-niveaux : légèrement en retrait, cartes plus petites */
+.dossier .folder-overview-container .tree-item .tree-item .tree-item-self {
+  margin-left: 14px;
+  padding: 6px 11px;
+  background: transparent;
+  border-style: dashed;
+}
+.dossier .folder-overview-container .tree-item .tree-item .nav-folder-title {
+  padding-left: 30px;
+}
+.dossier .folder-overview-container .tree-item .tree-item .nav-folder-title .collapse-icon {
+  left: 9px;
+}
+.dossier .folder-overview-container .tree-item .tree-item .nav-file-title {
+  padding-left: 30px;
+}
+.dossier .folder-overview-container .tree-item .tree-item .nav-file-title::before {
+  left: 9px;
+}
+/* l'icône de repli reste visible et alignée */
+.dossier .folder-overview-container .collapse-icon { opacity: 0.6; }
+.dossier .folder-overview-container .tree-item-inner { font-size: 0.95em; }
+
+/* Teinte légère de la couleur du dossier */
+.dossier blockquote { background: rgba(var(--dossier-rgb, var(--ctp-green)), 0.08); }
+.dossier .folder-overview-container .nav-folder-title {
+  background: rgba(var(--dossier-rgb, var(--ctp-green)), 0.06);
+}
+.dossier .folder-overview-container .nav-folder-title .tree-item-inner {
+  color: var(--dossier-color, var(--text-normal));
+}
+
+/* ==================================================================
+   Tâches : groupes (par projet) pliables au clic
+   ================================================================== */
+.tasks-group-heading {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+}
+.tasks-group-heading::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.8em;
+  height: 0.8em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / contain;
+  mask: no-repeat center / contain;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  transition: transform 120ms ease;
+}
+.tasks-group-heading.perso-collapsed::before { transform: rotate(-90deg); }
+.tasks-group-heading.perso-collapsed + ul.plugin-tasks-query-result { display: none; }
+.tasks-group-heading:hover { color: var(--text-normal); }

@@ -33,6 +33,9 @@ Respecte ces conventions quand tu ranges, crées ou modifies des notes.
   `statut` : `idée`, `en cours`, `en pause` ou `fini`.
 - Les tâches sont des cases à cocher `- [ ]` dans la note du projet concerné.
   Elles apparaissent seules sur `Accueil.md` (section « Tâches par projet », regroupées par note).
+- Dans les requêtes (vues Bases, requêtes Tasks), **exclus toujours le dossier `Modèles/`** :
+  ses modèles portent des tags (`projet`, `cours`…) et apparaîtraient comme de vraies notes.
+  Bases : `'!file.inFolder("Modèles")'` · Tasks : `path does not include Modèles`.
 - `Accueil.md` (racine) est la page d'accueil : tuiles `> [!cards]`, projets en cours (vue Bases),
   tâches par projet (requête Tasks). Ne la transforme pas sans demande.
 

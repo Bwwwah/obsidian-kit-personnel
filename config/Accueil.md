@@ -25,6 +25,7 @@ tags: [moc]
 filters:
   and:
     - file.hasTag("projet")
+    - '!file.inFolder("Modèles")'
 views:
   - type: cards
     name: Projets

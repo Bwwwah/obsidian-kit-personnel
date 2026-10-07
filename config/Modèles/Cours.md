@@ -1,6 +1,6 @@
 ---
 tags: [cours]
-source: CESI
+source: 
 ---
 > Sujet du cours — {{date:YYYY-MM-DD}}
 

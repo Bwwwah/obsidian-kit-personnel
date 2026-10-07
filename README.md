@@ -26,7 +26,9 @@ Un coffre Obsidian au look **vert terminal pastel** (thème AnuPpuccin), avec :
 3. Dans le Finder, ouvre le dossier du coffre et affiche les fichiers masqués
    (**Cmd+Maj+.**) pour voir `.obsidian`.
 4. Copie **le contenu** de `config/obsidian/` dans `.obsidian`.
-5. Copie `config/Modèles/` et `config/Accueil.md` à la racine du coffre.
+5. Copie `config/Modèles/`, `config/Accueil.md` et le dossier caché `config/.claude/`
+   à la racine du coffre. `.claude/CLAUDE.md` donne à Claude (Claudian) les conventions
+   du coffre : il saura comment faire les pages de dossier, où ranger les pièces jointes, etc.
 
 Si le coffre a déjà des modules installés, utilise plutôt le Terminal, qui fusionne :
 ```bash
@@ -74,6 +76,13 @@ et publie la *release* que BRAT distribue. Il faut `git` et `gh` (GitHub CLI) co
 
 ---
 
+## Importer des données (export Notion, dossiers en vrac…)
+
+Les dossiers créés **dans** Obsidian reçoivent leur page automatiquement. Pour des dossiers
+arrivés d'un coup (copiés dans le Finder, import Notion), lance une fois :
+Cmd+P → **Kit Personnel: Créer les pages de dossier manquantes**.
+Pour un seul dossier : clic droit dessus → **Créer la page de ce dossier**.
+
 ## Personnaliser
 
 - **Page d'accueil** : `Accueil.md` est une note normale. En mode édition (Cmd+E),
@@ -89,6 +98,7 @@ et publie la *release* que BRAT distribue. Il faut `git` et `gh` (GitHub CLI) co
 | `main.js`, `manifest.json`, `styles.css` | Le module **Kit Personnel** (distribué par BRAT) |
 | `config/obsidian/` | Configuration de départ : thème, réglages des modules, BRAT pré-réglé |
 | `config/Modèles/`, `config/Accueil.md` | Modèles de notes et page d'accueil de départ |
+| `config/.claude/CLAUDE.md` | Conventions du coffre, lues par Claude / Claudian |
 | `publier.sh` | Publier une nouvelle version (commit, tag, release) |
 
 ## Licence

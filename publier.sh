@@ -26,5 +26,5 @@ git commit -m "$MESSAGE"
 git tag "$VERSION"
 git push origin HEAD
 git push origin "$VERSION"
-gh release create "$VERSION" main.js manifest.json styles.css --title "$VERSION" --notes "$MESSAGE"
+gh release create "$VERSION" main.js manifest.json styles.css --title "$VERSION" --notes "${MESSAGE%%$'\n'*}"
 echo "Version $VERSION publiée : BRAT la distribuera aux coffres au prochain démarrage."

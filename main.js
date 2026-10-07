@@ -1,11 +1,12 @@
 /*
  * Kit Personnel — https://github.com/Bwwwah/obsidian-kit-personnel
  *  1. Couleurs des dossiers : chaque page prend la couleur de son dossier dans l'explorateur.
- *  2. Pages de dossier auto : un nouveau dossier reçoit sa page (folder note) stylée.
+ *  2. Pages de dossier auto : un nouveau dossier reçoit sa page (folder note) stylée ;
+ *     commande « Créer les pages de dossier manquantes » pour les dossiers importés.
  *  3. Tâches pliables : les groupes du plugin Tasks se replient au clic.
  * Le style (styles.css) est chargé automatiquement par Obsidian avec le module.
  */
-const { Plugin, MarkdownView, TFolder, normalizePath, debounce } = require('obsidian');
+const { Plugin, MarkdownView, TFolder, Notice, normalizePath, debounce } = require('obsidian');
 
 // ---------------------------------------------------------------- Couleurs
 function colorOfTopFolder(top) {
@@ -67,6 +68,22 @@ module.exports = class KitPersonnel extends Plugin {
       h.classList.toggle('perso-collapsed');
     }, { capture: true });
 
+    // --- Pages de dossier : commande + clic droit sur un dossier
+    this.addCommand({
+      id: 'creer-pages-manquantes',
+      name: 'Créer les pages de dossier manquantes',
+      callback: () => this.createMissingPages(),
+    });
+    this.registerEvent(this.app.workspace.on('file-menu', (menu, file) => {
+      if (!this.needsPage(file)) return;
+      menu.addItem(item => item
+        .setTitle('Créer la page de ce dossier')
+        .setIcon('file-plus')
+        .onClick(async () => {
+          if (await this.createPage(file)) new Notice(`Page créée : ${file.name}`);
+        }));
+    }));
+
     // --- Événements du coffre : seulement APRÈS le chargement initial,
     //     sinon « create » se déclenche pour chaque fichier existant au démarrage.
     this.app.workspace.onLayoutReady(() => {
@@ -115,17 +132,46 @@ module.exports = class KitPersonnel extends Plugin {
     return IGNORE.includes(folder.name) || IGNORE.includes(parts[0]);
   }
 
+  pagePath(folder) {
+    return normalizePath(`${folder.path}/${folder.name}.md`);
+  }
+
+  needsPage(folder) {
+    if (!(folder instanceof TFolder) || folder.isRoot() || this.shouldSkip(folder)) return false;
+    const existing = this.app.vault.getAbstractFileByPath(this.pagePath(folder));
+    return !existing || existing.stat.size === 0;
+  }
+
+  // Crée (ou remplit si vide) la page d'un dossier. Renvoie true si elle a été écrite.
+  async createPage(folder) {
+    if (!this.needsPage(folder)) return false;
+    const notePath = this.pagePath(folder);
+    const existing = this.app.vault.getAbstractFileByPath(notePath);
+    try {
+      if (!existing) await this.app.vault.create(notePath, pageBody());
+      else await this.app.vault.modify(existing, pageBody());
+      return true;
+    } catch (e) { return false; /* course possible avec un autre module : sans gravité */ }
+  }
+
+  // Nouveau dossier : petit délai pour laisser Obsidian finir de le poser.
   async ensurePage(folder) {
     if (this.shouldSkip(folder)) return;
     await new Promise(r => setTimeout(r, 250));
     const live = this.app.vault.getAbstractFileByPath(folder.path);
-    if (!(live instanceof TFolder)) return;
-    const notePath = normalizePath(`${folder.path}/${folder.name}.md`);
-    const existing = this.app.vault.getAbstractFileByPath(notePath);
-    try {
-      if (!existing) await this.app.vault.create(notePath, pageBody());
-      else if (existing.stat.size === 0) await this.app.vault.modify(existing, pageBody());
-    } catch (e) { /* course possible avec un autre module : sans gravité */ }
+    if (live instanceof TFolder) await this.createPage(live);
+  }
+
+  // Tous les dossiers existants sans page (après un import, par exemple).
+  async createMissingPages() {
+    const folders = this.app.vault.getAllLoadedFiles()
+      .filter(f => f instanceof TFolder && this.needsPage(f))
+      .sort((a, b) => a.path.localeCompare(b.path));
+    const created = [];
+    for (const f of folders) if (await this.createPage(f)) created.push(f.path);
+    if (created.length === 0) new Notice('Kit Personnel : tous les dossiers ont déjà leur page.');
+    else new Notice(`Kit Personnel : ${created.length} page(s) de dossier créée(s).`);
+    return created;
   }
 
   onunload() {
